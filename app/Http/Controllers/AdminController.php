@@ -50,21 +50,6 @@ class AdminController extends Controller
         // Mengirim data ke tampilan
         return view('pages-admin.kehadiran-siswapkl', compact('kehadiran'));
     }
-    
-
-   
-
-    // public function pengajuanSiswa()
-    // {
-    //     // Logika untuk mengelola pengajuan
-    //     return view('pages-admin.pengajuan-siswa');
-    // }
-
-    // public function tambahSiswa()
-    // {
-    //     // Logika untuk mengelola pengajuan
-    //     return view('pages-admin.tambah-siswa');
-    // }
 
 /* -------------------------------------------------------------------------- */
 /*                                  START DATA SISWA                          */

@@ -33,12 +33,12 @@
                         <tr class="jurnal-row bg-white hover:bg-gray-50 transition duration-200 ease-in-out text-xs">
                             <td class="py-2 px-4 border-b text-center">{{ $loop->iteration }}</td>
                             <td class="py-2 px-4 border-b text-left">{{ $item->kegiatan }}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $item->waktu_mulai }}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $item->waktu_selesai }}</td>
-                            <td class="py-2 px-4 border-b text-center">
-                                <img src="{{ asset('storage/'.$item->foto_kegiatan) }}" alt="Foto Kegiatan 1" class="w-16 h-16 object-cover rounded-full cursor-pointer" onclick="showActivityImage('{{ asset('storage/'.$item->foto_kegiatan) }}')">
-                            </td>
+                            <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->format('d F Y') }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->waktu_mulai)->format('H:i') }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->waktu_selesai)->format('H:i') }}</td>
+                            <td class="py-2 px-4 border-gray-300 border-b text-center flex justify-center items-center">
+                                <img src="{{ asset('storage/'.$item->foto_kegiatan) }}" alt="Foto Kegiatan 1" class="w-14 h-14 object-cover rounded-full cursor-pointer" onclick="showActivityImage('{{ asset('storage/'.$item->foto_kegiatan) }}')">
+                            </td>                            
                         </tr>
                     @endforeach
                 </tbody>

@@ -78,12 +78,11 @@
                                 </td>                                
                                 <td class="py-2 px-4 border-b border-gray-300 text-center">
                                     @if ($item->laporan)
-                                    <a href="{{ route('download-laporan', $item->laporan->id) }}" 
-                                        class="inline-flex items-center justify-center px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300">
+                                    <a href="{{ asset('storage/' . $item->laporan->file_path) }}"  class="inline-flex items-center justify-center px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300">
                                         <i class="fas fa-eye mr-2"></i> Lihat
-                                    </a>                                     
+                                    </a>
                                     @else
-                                        <p class="text-gray-500">Belum ada laporan</p>
+                                        <p>Tidak ada laporan</p>
                                     @endif
                                 </td>                                                                                                                         
                         @endforeach
