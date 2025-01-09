@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi PKL</title>
+    <title>SI-PKL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ asset('assets/sipkl.png') }}" type="image/x-icon" />
@@ -84,14 +84,14 @@
             <!-- Left Content (Text) -->
             <div class="text-center md:text-left md:w-1/2 mt-0 md:mt-[-50px]">
                 <h2 class="text-2xl md:text-4xl font-bold text-indigo-700 mb-4">Selamat Datang di SI-PKL</h2>
-                <p class="text-xl md:text-xl text-gray-800 mb-6">Platform untuk memudahkan proses administrasi PKL siswa, memberikan pengalaman yang lebih baik dan efisien.</p>
+                <p class="text-base md:text-lg text-gray-800 mb-6">Platform untuk memudahkan proses administrasi PKL siswa, memberikan pengalaman yang lebih baik dan efisien.</p>
                 <!-- New Button Style -->
-                <a href="#tentang" class="bg-gradient-to-r from-teal-500 to-blue-600 text-white px-4 md:px-6 py-3 md:py-4 rounded-full text-base md:text-base font-semibold shadow-lg hover:scale-105 transition-all duration-300">Pelajari Lebih Lanjut</a>
+                <a href="#tentang" class="bg-gradient-to-r from-teal-500 to-blue-600 text-white px-3 md:px-6 py-2 md:py-4 rounded-full text-base md:text-base font-semibold shadow-lg hover:scale-105 transition-all duration-300">Pelajari Lebih Lanjut</a>
             </div>
             <!-- Right Content (Image/Animated Icon) -->
-            <div class="md:w-1/2 flex justify-center md:justify-end mt-8 md:mt-0" data-aos="zoom-in" data-aos-duration="1000">
+            <div class="md:w-1/2 flex justify-center md:justify-end mt-8 md:mt-0 mr-12" data-aos="zoom-in" data-aos-duration="1000">
                 <div class="relative">
-                    <img src="{{ asset('assets/1.png') }}" alt="Gambar Beranda" class="w-96 md:w-[400px] h-96 md:h-[400px]">
+                    <img src="{{ asset('assets/1.png') }}" alt="Gambar Beranda" class="w-80 md:w-[400px] h-90 md:h-[400px]">
                 </div>
             </div>
         </div>
@@ -106,8 +106,8 @@
             
             <!-- Right Content (Text) -->
             <div class="w-full md:w-1/2 md:pl-12 order-1 md:order-2">
-                <h1 class="text-3xl font-bold text-blue-600 mb-4">Tentang Sistem Informasi PKL</h1>
-                <p class="text-gray-600 mb-6">Sistem Informasi PKL ini membantu mengelola kegiatan PKL siswa dengan lebih efisien, mulai dari absensi hingga laporan kegiatan.</p>
+                <h1 class="text-3xl font-bold text-blue-600 mb-4">Tentang SI-PKL</h1>
+                <p class="text-gray-600 mb-6">SI-PKL ini membantu mengelola kegiatan PKL siswa dengan lebih efisien, mulai dari absensi hingga laporan kegiatan.</p>
                 
                 <!-- New Content with Icons -->
                 <ul class="space-y-4">
@@ -128,57 +128,57 @@
         </div>
     </section>
 
-  <section id="fitur" class="py-20 ">
-    <div class="container mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-indigo-700">Fitur Unggulan</h2>
-            <p class="text-lg text-gray-700 mt-4">Beragam fitur untuk mendukung kegiatan PKL siswa dengan lebih efisien.</p>
+    <section id="fitur" class="py-20 bg-gray-100">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-indigo-700">Fitur Unggulan</h2>
+                <p class="text-lg text-gray-700 mt-4">Beragam fitur untuk mendukung kegiatan PKL siswa dengan lebih efisien.</p>
+            </div>
+            <!-- Fitur Items -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Fitur 1 -->
+                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center mx-4">
+                    <div class="md:w-1/2 text-center md:text-left mb-4 md:mb-0">
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Absensi Kamera</h3>
+                        <p class="text-lg text-gray-700">Siswa dapat melakukan absensi dengan menggunakan kamera secara mudah dan praktis.</p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
+                        <img alt="Absensi Kamera" class="w-36 h-36 md:w-72 md:h-72" src="{{ asset('assets/4.png') }}" />
+                    </div>
+                </div>
+                <!-- Fitur 2 -->
+                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center mx-4">
+                    <div class="md:w-1/2 text-center md:text-left mb-4 md:mb-0">
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Laporan Kegiatan</h3>
+                        <p class="text-lg text-gray-700">Membantu siswa membuat laporan kegiatan PKL yang terstruktur dan mudah dipahami.</p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
+                        <img alt="Laporan Kegiatan" class="w-36 h-36 md:w-72 md:h-72" src="{{ asset('assets/3.png') }}" />
+                    </div>
+                </div>
+                <!-- Fitur 3 -->
+                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center mx-4">
+                    <div class="md:w-1/2 text-center md:text-left mb-4 md:mb-0">
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Pengajuan Izin</h3>
+                        <p class="text-lg text-gray-700">Memudahkan siswa untuk mengajukan izin jika tidak dapat hadir ke lokasi PKL.</p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
+                        <img alt="Pengajuan Izin" class="w-36 h-36 md:w-72 md:h-72" src="{{ asset('assets/6.png') }}" />
+                    </div>
+                </div>
+                <!-- Fitur 4 -->
+                <div class="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center mx-4">
+                    <div class="md:w-1/2 text-center md:text-left mb-4 md:mb-0">
+                        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Monitoring</h3>
+                        <p class="text-lg text-gray-700">Pantau kegiatan siswa secara real-time untuk memastikan kehadiran dan aktivitas mereka.</p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
+                        <img alt="Monitoring" class="w-36 h-36 md:w-72 md:h-72" src="{{ asset('assets/5.png') }}" />
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Fitur Items -->
-        <div class="space-y-16">
-            <!-- Fitur 1 -->
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-1/2 text-center md:text-left">
-                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Absensi Kamera</h3>
-                    <p class="text-lg text-gray-700">Siswa dapat melakukan absensi dengan menggunakan kamera secara mudah dan praktis.</p>
-                </div>
-                <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
-                    <img alt="Absensi Kamera" class="w-72 h-72" src="{{ asset('assets/4.png') }}"/>
-                </div>
-            </div>
-            <!-- Fitur 2 -->
-            <div class="flex flex-col md:flex-row-reverse items-center justify-between">
-                <div class="md:w-1/2 text-center md:text-left">
-                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Laporan Kegiatan</h3>
-                    <p class="text-lg text-gray-700">Membantu siswa membuat laporan kegiatan PKL yang terstruktur dan mudah dipahami.</p>
-                </div>
-                <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
-                    <img alt="Laporan Kegiatan" class="w-72 h-72" src="{{ asset('assets/3.png') }}"/>
-                </div>
-            </div>
-            <!-- Fitur 3 -->
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-1/2 text-center md:text-left">
-                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Pengajuan Izin</h3>
-                    <p class="text-lg text-gray-700">Memudahkan siswa untuk mengajukan izin jika tidak dapat hadir ke lokasi PKL.</p>
-                </div>
-                <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
-                    <img alt="Pengajuan Izin" class="w-72 h-72" height="150" src="{{ asset('assets/6.png') }}" width="150"/>
-                </div>
-            </div>
-            <!-- Fitur 4 -->
-            <div class="flex flex-col md:flex-row-reverse items-center justify-between">
-                <div class="md:w-1/2 text-center md:text-left">
-                    <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Monitoring</h3>
-                    <p class="text-lg text-gray-700">Pantau kegiatan siswa secara real-time untuk memastikan kehadiran dan aktivitas mereka.</p>
-                </div>
-                <div class="md:w-1/2 flex justify-center" data-aos="zoom-in" data-aos-duration="1000">
-                    <img alt="Monitoring" class="w-72 h-72" height="150" src="{{ asset('assets/5.png') }}" width="150"/>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>    
 
 <section id="kontak" class="bg-white py-8 scroll-mt-16">
     <div class="max-w-4xl mx-auto py-16 px-4">
