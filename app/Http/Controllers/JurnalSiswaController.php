@@ -13,22 +13,21 @@ class JurnalSiswaController extends Controller
     public function index(Request $request)
     {
         $users = Auth::user();
-        
+
         // Ambil data jurnal berdasarkan user_id
         $jurnal = Jurnal::where('user_id', $users->id);
-    
+
         // Filter berdasarkan tanggal jika ada
         if ($request->has('tanggal') && $request->tanggal) {
             $jurnal = $jurnal->whereDate('tanggal', $request->tanggal);
         }
-    
-        // Ambil data jurnal dan kirim ke view
+
+        // Ambil semua data jurnal
         $jurnal = $jurnal->get();
-    
+
         // Kembalikan tampilan dengan data jurnal
         return view('pages-user.jurnal.index', compact('jurnal'));
     }
-    
     public function edit($id)
     {
         $jurnal = Jurnal::findOrFail($id);

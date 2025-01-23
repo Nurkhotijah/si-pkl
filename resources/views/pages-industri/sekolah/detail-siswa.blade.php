@@ -52,8 +52,12 @@
                     <td class="py-2 px-4 border-b text-center">{{ $loop->iteration }}</td>
                     <td class="py-2 px-4 border-b text-left">{{ $item->nama }}</td>
                     <td class="py-2 px-4 border-b text-left">{{ $item->jurusan }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->locale('id')->format('d F Y') }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal_selesai)->locale('id')->format('d F Y') }}</td>
+                    <td class="py-2 px-4 border-b text-center">
+                        {{ \Carbon\Carbon::parse($item->tanggal_mulai)->translatedFormat('d F Y') }}
+                    </td>
+                    <td class="py-2 px-4 border-b text-center">
+                        {{ \Carbon\Carbon::parse($item->tanggal_selesai)->translatedFormat('d F Y') }}
+                    </td>                    
                     <td class="py-2 px-4 border-b text-center">
                         <a href="{{ asset('storage/' . $item->cv_file) }}" class="bg-blue-500 text-white text-xs px-2 py-1 rounded hover:bg-blue-600 transition duration-300">
                             <i class="fas fa-file-pdf"></i>
@@ -166,39 +170,6 @@
         alert(`Mengedit data siswa dengan ID: ${studentId}`);
         // You can redirect to an edit page or show a modal
     }
-
-    // // Pagination logic (basic example)
-    // let currentPage = 1;
-    // const rowsPerPage = 5;
-
-    // function prevPage() {
-    //     if (currentPage > 1) {
-    //         currentPage--;
-    //         updatePagination();
-    //     }
-    // }
-
-    // function nextPage() {
-    //     currentPage++;
-    //     updatePagination();
-    // }
-
-    // function updatePagination() {
-    //     const rows = document.querySelectorAll('.student-row');
-    //     const start = (currentPage - 1) * rowsPerPage;
-    //     const end = start + rowsPerPage;
-    //     rows.forEach((row, index) => {
-    //         if (index >= start && index < end) {
-    //             row.style.display = '';
-    //         } else {
-    //             row.style.display = 'none';
-    //         }
-    //     });
-    //     document.getElementById('pageNumber').textContent = `Halaman ${currentPage}`;
-    // }
-
-    // // Initialize pagination
-    // updatePagination();
 </script>
 
 

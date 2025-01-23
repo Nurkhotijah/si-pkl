@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('assets/logo absensipkl.png') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.1/css/boxicons.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">

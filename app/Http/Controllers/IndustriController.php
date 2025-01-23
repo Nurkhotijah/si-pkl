@@ -233,21 +233,24 @@ public function updateStatusSiswa(Request $request)
 
     \Log::info("Status berhasil diperbarui untuk ID: $id, Status: $status");
 
-    // Membuat akun siswa
-    $this->createSiswaAccount($pengajuanSiswa);
+    // Logika tambahan: Hanya buat akun siswa dan kirim email jika status diterima
+    if ($status === 'diterima') {
+        // Membuat akun siswa
+        $this->createSiswaAccount($pengajuanSiswa);
 
-    // Mengirim email ke sekolah
-    $sekolahEmail = $pengajuanSiswa->sekolah->user->email ?? null;
+        // Mengirim email ke sekolah
+        $sekolahEmail = $pengajuanSiswa->sekolah->user->email ?? null;
 
-    if ($sekolahEmail) {
-        try {
-            Mail::to($sekolahEmail)->send(new SiswaAccountEmail($pengajuanSiswa));
-        } catch (\Exception $e) {
-            \Log::error("Gagal mengirim email: " . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Status berhasil diperbarui, tetapi email gagal dikirim.',
-            ], 500);
+        if ($sekolahEmail) {
+            try {
+                Mail::to($sekolahEmail)->send(new SiswaAccountEmail($pengajuanSiswa));
+            } catch (\Exception $e) {
+                \Log::error("Gagal mengirim email: " . $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Status berhasil diperbarui, tetapi email gagal dikirim.',
+                ], 500);
+            }
         }
     }
 
@@ -256,6 +259,7 @@ public function updateStatusSiswa(Request $request)
         'message' => "Status siswa telah diperbarui menjadi {$status}.",
     ]);
 }
+
 protected function createSiswaAccount(Pengajuan $pengajuanSiswa)
 {
     // Membuat email yang unik
@@ -282,6 +286,8 @@ protected function createSiswaAccount(Pengajuan $pengajuanSiswa)
         'cv_file' => $pengajuanSiswa->cv_file,
     ]);
 }
+
+
 protected function generateUniqueEmail($email, $pengajuanSiswa)
 {
     $originalEmail = $email;

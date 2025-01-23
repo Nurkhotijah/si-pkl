@@ -55,23 +55,31 @@ class AdminController extends Controller
 /*                                  START DATA SISWA                          */
 /* -------------------------------------------------------------------------- */
 
-    public function dataSiswa()
+    public function dataSiswa(Request $request)
     {
-        $siswa = User::whereHas('profile', function ($query) {
+        $search = $request->input('search');
+        
+        $siswa = User::whereHas('profile', function ($query) use ($search) {
             $query->where('id_sekolah', Auth::user()->sekolah->id);
+
+            // Cek apakah ada input pencarian
+            if ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('jurusan', 'like', '%' . $search . '%');
+                });
+            }
         })->get();
+
         return view('pages-admin.data-siswa', compact('siswa'));
     }
+
     public function downloadPenilaian($id) 
     {
         $penilaian = Penilaian::where("user_id", $id)->first();
-        
+    
         if (!$penilaian) {
-            $siswa = User::whereHas('profile', function ($query) {
-                $query->where('id_sekolah', Auth::user()->sekolah->id);
-            })->get();
-        
-            return view('pages-admin.data-siswa', compact('siswa'))
+            return redirect()->route('data-siswa')
                 ->with('error', 'Data Penilaian tidak ditemukan.');
         }
     
@@ -191,17 +199,17 @@ class AdminController extends Controller
 /*                                  END DATA SISWA                            */
 /* -------------------------------------------------------------------------- */
 
-    public function nilaiSiswa()
-    {
+    // public function nilaiSiswa()
+    // {
 
-        return view('pages-admin.nilai-siswa');
-    }
+    //     return view('pages-admin.nilai-siswa');
+    // }
 
-    public function rekapKehadiransiswa()
-    {
+    // public function rekapKehadiransiswa()
+    // {
 
-        return view('pages-admin.rekap-kehadiransiswa');
-    }
+    //     return view('pages-admin.rekap-kehadiransiswa');
+    // }
 
 /* -------------------------------------------------------------------------- */
 /*                                  START PROFILE                             */

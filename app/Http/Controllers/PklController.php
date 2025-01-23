@@ -30,7 +30,7 @@ class PklController extends Controller
                     ->get();
 
     // Jika parameter status ada dan sekolah belum diterima
-    if ($request->has('status') && $request->status === 'not_accepted') {
+    if ($request->has('status') && $request->status === 'sekolah belum diterima') {
         // Kirimkan pesan flash ke session
         session()->flash('message', 'Sekolah Anda belum disetujui');
     }

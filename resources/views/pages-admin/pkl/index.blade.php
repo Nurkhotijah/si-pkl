@@ -21,7 +21,7 @@
                     <input class="border rounded p-2 pl-10 w-full" id="search" name="search" placeholder="Cari Tahun" type="text" value="{{ request('search') }}">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </form>                
-                <a href="{{ Auth::user()->sekolah->status === 'diterima' ? route('pkl.create') : route('pkl.index').'?status=not_accepted' }}" 
+                <a href="{{ Auth::user()->sekolah->status === 'diterima' ? route('pkl.create') : route('pkl.index').'?sekolah belum diterima' }}" 
                     class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 transition duration-300 ease-in-out mt-4 sm:mt-0"
                     {{ Auth::user()->sekolah->status !== 'diterima' ? 'disabled' : '' }}>
                     <i class="fas fa-plus mr-2 text-xs"></i>Tambah Data

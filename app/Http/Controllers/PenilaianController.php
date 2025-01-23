@@ -15,18 +15,19 @@ class PenilaianController extends Controller
     public function showuser()
     {
         // Ambil penilaian berdasarkan user ID yang sedang login
-        $penilaian = Penilaian::with('user') // Memastikan relasi 'user' di-load
-            ->where('user_id', auth()->user()->id) // Filter berdasarkan ID pengguna yang sedang login
-            ->first(); // Ambil penilaian pertama, bisa kosong jika tidak ada
-        
-        // Jika penilaian tidak ditemukan, arahkan kembali ke halaman jurnal.index
+        $penilaian = Penilaian::with('user')
+            ->where('user_id', auth()->user()->id)
+            ->first();
+    
+        // Jika penilaian tidak ditemukan, tampilkan alert
         if (!$penilaian) {
-            return redirect()->action([JurnalSiswaController::class, 'index']);
+            return redirect()->action([JurnalSiswaController::class, 'index'])
+                ->with('alert', 'Data penilaian Anda belum tersedia.');
         }
     
-        // Tentukan tanggal mulai dan selesai, pastikan variabel ini ada
-        $tanggalMulai = $penilaian->tanggal_mulai; // Misal, ambil dari model penilaian
-        $tanggalSelesai = $penilaian->tanggal_selesai; // Misal, ambil dari model penilaian
+        // Tentukan tanggal mulai dan selesai
+        $tanggalMulai = $penilaian->tanggal_mulai;
+        $tanggalSelesai = $penilaian->tanggal_selesai;
     
         // Jika penilaian ditemukan, buat PDF dan download
         $pdf = Pdf::loadView('template-penilaian', compact('penilaian', 'tanggalMulai', 'tanggalSelesai'));
@@ -34,5 +35,4 @@ class PenilaianController extends Controller
         return $pdf->download('Laporan_Penilaian_PKL.pdf');
     }
     
-
 }

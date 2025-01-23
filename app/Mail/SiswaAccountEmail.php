@@ -31,7 +31,7 @@ class SiswaAccountEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Akun Siswa Baru Telah Dibuat')
+        return $this->subject('Selamat Siswa Anda Telah Diterima')
                     ->view('emails.siswa_account')
                     ->with([
                         'name' => $this->pengajuanSiswa->nama,

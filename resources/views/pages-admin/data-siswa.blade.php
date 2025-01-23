@@ -17,7 +17,7 @@
                 </div>
             </div>
             @if(session('error'))
-            <div class="alert alert-danger">
+            <div id="flash-message" class="alert alert-danger">
                 {{ session('error') }}
             </div>
          @endif
@@ -109,6 +109,16 @@
 </div>
 
 <script>
+// Flash message timeout
+window.onload = function () {
+    const flashMessage = document.getElementById("flash-message");
+    if (flashMessage) {
+        setTimeout(function () {
+            flashMessage.classList.add("hidden");
+        }, 3000); // Hide after 3 seconds
+    }
+};
+
 // Search function
 function searchTable() {
     const input = document.getElementById('search');

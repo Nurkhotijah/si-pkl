@@ -38,7 +38,7 @@
 
                     <div>
                         <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                        <textarea id="alamat" name="alamat" rows="3" 
+                        <textarea id="alamat" name="alamat" value="{{ old('alamat', $profile->alamat) }}" 
                             class="w-full border border-gray-300 focus:border-blue-500 focus:ring-blue-200 rounded-lg p-2 text-sm">{{ old('alamat', $profile->sekolah->alamat ?? '') }}</textarea>
                     </div>
 

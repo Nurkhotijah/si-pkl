@@ -34,8 +34,13 @@
                 <!-- Filter Tanggal -->
                 <div class="mt-4 md:mt-0">
                     <form action="{{ route('riwayat-absensi') }}" method="GET">
-                        <input type="date" name="tanggal" class="border rounded p-2 w-full md:w-auto text-xs" value="{{ request()->tanggal }}" onchange="this.form.submit()">
-                    </form>
+                        <input 
+                            type="date" 
+                            name="tanggal" 
+                            class="border rounded p-2 w-full md:w-auto text-xs" 
+                            value="{{ request()->tanggal }}" 
+                            onchange="this.form.submit()">
+                    </form>                    
                 </div>
             </div>
                         
@@ -180,7 +185,7 @@ function submitForm() {
 }
 
 let currentPage = 1;
-const ITEMS_PER_PAGE = 5; // Set jumlah item per halaman
+const ITEMS_PER_PAGE = 10; // Set jumlah item per halaman
 let filteredData = [];  // Menyimpan data yang akan dipaginasikan
 
 // Fungsi untuk memperbarui tampilan berdasarkan halaman
@@ -216,11 +221,20 @@ function nextPage() {
         updateTableDisplay();
     }
 }
-
 // Menampilkan halaman pertama setelah data dimuat
 document.addEventListener('DOMContentLoaded', () => {
     filteredData = Array.from(document.querySelectorAll('.kehadiran-row'));  // Targetkan rows dengan class kehadiran-row
     updateTableDisplay();  // Memperbarui tampilan tabel
+});
+
+document.querySelector('input[name="tanggal"]').addEventListener('change', function() {
+    if (!this.value) {
+        // Ketika input tanggal kosong, hapus parameter 'tanggal' dari URL
+        window.location.href = "{{ route('riwayat-absensi') }}";
+    } else {
+        // Kirimkan form jika ada tanggal yang dipilih
+        this.form.submit();
+    }
 });
 
 </script>

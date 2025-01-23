@@ -18,18 +18,16 @@ class KehadiranController extends Controller
     // Menampilkan riwayat kehadiran
     public function index(Request $request)
     {
-        // Ambil data kehadiran berdasarkan user yang login
-        $kehadiran = Kehadiran::where('user_id', Auth::id())
-            ->orderBy('tanggal', 'desc');
-    
-        // Filter berdasarkan tanggal
-        if ($request->has('tanggal')) {
-            $kehadiran = $kehadiran->whereDate('tanggal', $request->tanggal);
+        $query = Kehadiran::where('user_id', Auth::id());
+
+        // Filter berdasarkan tanggal jika tersedia
+        if ($request->has('tanggal') && $request->tanggal) {
+            $query->whereDate('tanggal', $request->tanggal);
         }
-    
-        // Mengambil data kehadiran dengan paginasi
-        $kehadiran = $kehadiran->paginate(2); // 2 entries per page
-    
+
+        // Ambil semua data kehadiran
+        $kehadiran = $query->orderBy('tanggal', 'desc')->get();
+            
         // Ambil data profile untuk mengecek tanggal selesai PKL
         $profile = Profile::where('user_id', Auth::id())->first();
     
