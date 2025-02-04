@@ -15,7 +15,7 @@
                         <form method="GET" action="{{ route('kehadiran.detail', $userId) }}" id="dateForm">
                             <label class="mr-2" for="date"></label>
                             <input type="date" class="border rounded p-2 w-full sm:w-auto" id="date" name="tanggal" 
-                            value="{{ request('tanggal') }}"  
+                            value="{{ request('tanggal') }}"  max="{{ now()->toDateString() }}" 
                                 onchange="this.form.submit()" 
                             />
                         </form>                                                                               
@@ -41,7 +41,7 @@
                         @foreach ($kehadiran as $item)
                             <tr class="kehadiran-row bg-white hover:bg-gray-50 transition duration-200 ease-in-out">
                                 <td class="py-2 px-4 border-b text-center">{{ $loop->iteration }}</td>
-                                <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->format('d F Y') }}</td>
+                                <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
                                 <td class="py-2 px-4 border-b text-center">{{ $item->waktu_masuk ? \Carbon\Carbon::parse($item->waktu_masuk)->format('H:i:s') : '-' }}</td>
                                 <td class="py-2 px-4 border-b text-center">{{ $item->waktu_keluar ? \Carbon\Carbon::parse($item->waktu_keluar)->format('H:i:s') : '-' }}</td>
                                 <td class="py-2 px-4 text-center border-b border-gray-300">

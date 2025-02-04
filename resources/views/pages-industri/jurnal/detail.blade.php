@@ -17,7 +17,7 @@
                         id="dateInput" 
                         type="date" 
                         name="tanggal" 
-                        value="{{ request('tanggal') }}" />
+                        value="{{ request('tanggal') }}" max="{{ now()->toDateString() }}"  />
                 </div>
             </form>
         </div>
@@ -40,7 +40,7 @@
                     <tr class="jurnal-row bg-white hover:bg-gray-50 transition duration-200 ease-in-out text-xs">
                         <td class="py-2 px-4 border-b text-center">{{ $loop->iteration + ($listdetail->currentPage() - 1) * $listdetail->perPage() }}</td>
                         <td class="py-2 px-4 border-b text-left">{{ $item->kegiatan }}</td>
-                        <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->locale('id')->format('d F Y') }}</td>
+                        <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->locale('id')->translatedFormat('d F Y') }}</td>
                         <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->waktu_mulai)->locale('id')->format('H:i') }}</td>
                         <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->waktu_selesai)->locale('id')->format('H:i') }}</td>
                         <td class="py-2 px-4 border-b text-center flex justify-center items-center">

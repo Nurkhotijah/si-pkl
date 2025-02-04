@@ -23,11 +23,11 @@
       </p>
       <p class="mb-2">
         <span class="font-semibold text-gray-700 text-sm">Tanggal Mulai PKL :</span><br/>
-        <span class="text-sm text-gray-700">{{ \Carbon\Carbon::parse($profilesiswa->profile->tanggal_mulai)->format('d M Y') }}</span>
+        <span class="text-sm text-gray-700">{{ \Carbon\Carbon::parse($profilesiswa->profile->tanggal_mulai)->translatedFormat('d F Y') }}</span>
       </p>
       <p class="mb-2">
         <span class="font-semibold text-gray-700 text-sm">Tanggal Selesai PKL :</span><br/>
-        <span class="text-sm text-gray-700">{{ \Carbon\Carbon::parse($profilesiswa->profile->tanggal_selesai)->format('d M Y') }}</span>
+        <span class="text-sm text-gray-700">{{ \Carbon\Carbon::parse($profilesiswa->profile->tanggal_selesai)->translatedFormat('d F Y') }}</span>
       </p>
     </div>
   </div>

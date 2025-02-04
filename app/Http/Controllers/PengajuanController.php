@@ -17,40 +17,55 @@ class PengajuanController extends Controller
         return view('pages-admin.pkl.pengajuan.index', compact('pengajuan', 'id_pkl'));
     }
 
+    public function edit($id_pkl) // Untuk menampilkan form pengajuan siswa
+    {
+        return view('pages-admin.pkl.pengajuan.edit', compact('id_pkl')); // Pastikan view yang dimaksud sesuai
+    }
+
     public function create($id_pkl) // Untuk menampilkan form pengajuan siswa
     {
         return view('pages-admin.pkl.pengajuan.create', compact('id_pkl')); // Pastikan view yang dimaksud sesuai
     }
 
     public function store(Request $request, $id_pkl) // Untuk menyimpan pengajuan siswa baru
-    {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'jurusan' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'cv' => 'required|mimes:pdf',
-        ]);
+{
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'jurusan' => 'required|string|max:255',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        'cv' => 'required|mimes:pdf|max:5000', // Maksimal 5MB dan hanya file PDF
+    ], [
+        'nama.required' => 'Nama siswa wajib diisi.',
+        'jurusan.required' => 'Jurusan wajib diisi.',
+        'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
+        'tanggal_selesai.required' => 'Tanggal selesai wajib diisi.',
+        'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
+        'cv.required' => 'CV wajib diunggah.',
+        'cv.mimes' => 'File CV harus berupa PDF.',
+        'cv.max' => 'File CV maksimal 5MB.',
+    ]);
 
-        $users = Auth::user(); // Mendapatkan data pengguna yang login
+    $users = Auth::user(); // Mendapatkan data pengguna yang login
 
-        // Menyimpan file CV ke direktori public
-        $filePath = $request->file('cv')->store('cv_siswa', 'public');
+    // Menyimpan file CV ke direktori public
+    $filePath = $request->file('cv')->store('cv_siswa', 'public');
 
-        // Menyimpan pengajuan siswa ke dalam database
-        Pengajuan::create([
-            'nama' => $request->nama,
-            'jurusan' => $request->jurusan,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
-            'cv_file' => $filePath,
-            'status_persetujuan' => 'pending',
-            'id_pkl' => $id_pkl, // ID Sekolah yang login
-            'id_sekolah' => $users->sekolah->id, // ID Sekolah yang login
-        ]);
+    // Menyimpan pengajuan siswa ke dalam database
+    Pengajuan::create([
+        'nama' => $request->nama,
+        'jurusan' => $request->jurusan,
+        'tanggal_mulai' => $request->tanggal_mulai,
+        'tanggal_selesai' => $request->tanggal_selesai,
+        'cv_file' => $filePath,
+        'status_persetujuan' => 'pending',
+        'id_pkl' => $id_pkl, // ID Sekolah yang login
+        'id_sekolah' => $users->sekolah->id, // ID Sekolah yang login
+    ]);
 
-        return redirect('/pengajuan/list-siswa/' . $id_pkl)->with('success', 'Pengajuan siswa berhasil diajukan.');
-    }
+    return redirect('/pengajuan/list-siswa/' . $id_pkl)->with('success', 'Pengajuan siswa berhasil diajukan.');
+}
+
 
     public function destroy($id)
     {
@@ -76,7 +91,5 @@ class PengajuanController extends Controller
         // Kembali ke halaman yang sama dengan pesan sukses
         return redirect()->back()->with('success', 'Pengajuan siswa berhasil dihapus.');
     }
-
-    // Method untuk mengupdate status pengajuan siswa yang dipilih
 
 }

@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+/* -------------------------------------------------------------------------- */
+/*                                  START DASHBOARD                           */
+/* -------------------------------------------------------------------------- */
+
     public function dashboard()
 {
     // Menghitung jumlah jurnal yang terkait dengan user yang sedang login berdasarkan sekolah yang terhubung
@@ -40,6 +44,15 @@ class AdminController extends Controller
     return view('pages-admin.dashboard-admin', compact('jumlahjurnal', 'jumlahkehadiran', 'jumlahsiswa'));
 }
 
+
+/* -------------------------------------------------------------------------- */
+/*                                  END DASHBOARD                             */
+/* -------------------------------------------------------------------------- */
+
+
+/* -------------------------------------------------------------------------- */
+/*                                  START KEHADIRAN                           */
+/* -------------------------------------------------------------------------- */
     
     public function index()
     {
@@ -50,6 +63,12 @@ class AdminController extends Controller
         // Mengirim data ke tampilan
         return view('pages-admin.kehadiran-siswapkl', compact('kehadiran'));
     }
+
+
+/* -------------------------------------------------------------------------- */
+/*                                  END KEHADIRAN                             */
+/* -------------------------------------------------------------------------- */
+
 
 /* -------------------------------------------------------------------------- */
 /*                                  START DATA SISWA                          */
@@ -198,19 +217,6 @@ class AdminController extends Controller
 /* -------------------------------------------------------------------------- */
 /*                                  END DATA SISWA                            */
 /* -------------------------------------------------------------------------- */
-
-    // public function nilaiSiswa()
-    // {
-
-    //     return view('pages-admin.nilai-siswa');
-    // }
-
-    // public function rekapKehadiransiswa()
-    // {
-
-    //     return view('pages-admin.rekap-kehadiransiswa');
-    // }
-
 /* -------------------------------------------------------------------------- */
 /*                                  START PROFILE                             */
 /* -------------------------------------------------------------------------- */
@@ -238,29 +244,41 @@ class AdminController extends Controller
             'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:1000',
             'password' => 'nullable|string|min:6|confirmed',
         ]);
-
-        $profile = User::findOrFail(auth()->id());
-
-        $profile->name = $request->name;
-        $profile->alamat = $request->alamat;
-        $profile->email = $request->email;
-
+    
+        $user = User::findOrFail(auth()->id());
+    
+        // Update tabel `users`
+        $user->name = $request->name;
+        $user->alamat = $request->alamat;
+        $user->email = $request->email;
+    
         if ($request->hasFile('foto_profile')) {
             $path = $request->file('foto_profile')->store('profile_pictures', 'public');
-            $profile->foto_profile = $path;
+            $user->foto_profile = $path;
         }
-
-        
-
+    
         if ($request->filled('password')) {
-            $profile->password = Hash::make($request->password);
+            $user->password = Hash::make($request->password);
         }
-
-        $profile->save();
-
+    
+        $user->save();
+    
+        // Update tabel `profile`
+        if ($user->profile) {
+            $user->profile->alamat = $request->alamat;
+            $user->profile->save();
+        }
+    
+        // Update tabel `sekolah`
+        if ($user->sekolah) {
+            $user->sekolah->nama = $request->name; // Mengupdate nama sekolah dengan nama user
+            $user->sekolah->alamat = $request->alamat;
+            $user->sekolah->save();
+        }
+    
         return redirect()->route('profile-admin')->with('success', 'Profil berhasil diperbarui.');
     }
-
+    
 /* -------------------------------------------------------------------------- */
 /*                                  END PROFILE                               */
 /* -------------------------------------------------------------------------- */

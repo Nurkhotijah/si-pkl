@@ -6,17 +6,12 @@
 
 <body class="flex-1 p-6 bg-gray-100 font-poppins">
   <!-- Kotak utama untuk konten -->
-  <div class="bg-white p-4 rounded-lg shadow-md mb-6">
-    <h1 class="text-xl font-bold mb-2">
-      Hai {{ Auth::user()->name }}
-      <span class="ml-2">
-        <i class="fas fa-star text-yellow-500"></i>
-      </span>
-    </h1>
-    <p class="mb-4 text-base font-semibold">Selamat Datang Di SI-PKL</p>
-    <p class="text-gray-600 mb-4"></p>
+  <div class="bg-white p-6 rounded-lg shadow-md mb-6 border-b-4 border-gray-300">
+    <h1 class="text-xl font-bold mb-2">Hai {{ Auth::user()->name }}!</h1>
+    <p class="text-base text-gray-900">
+      Selamat datang di si-pkl. Silakan pantau data kehadiran siswa anda dengan lebih mudah di sini.
+    </p>
   </div>
-
   <div class="grid grid-cols-1  lg:grid-cols-3 gap-4">
     <!-- Waktu Saat Ini -->
     <div class="bg-white rounded-lg shadow-lg p-6 text-center border border-transparent hover:border-gradient-to-r hover:from-blue-400 hover:to-blue-600 transition">

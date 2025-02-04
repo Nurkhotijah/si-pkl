@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginNotificationMail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -26,45 +28,48 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:5',
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 5 karakter.',
         ]);
-
+    
         $user = User::where("email", $request->email)->first();
-
+    
         if (!$user) {
             return back()->withErrors(['email' => 'Invalid email or password.']);
         }
-
+    
+        // Logout semua guard sebelum login
         Auth::guard('industri')->logout();
         Auth::guard('sekolah')->logout();
         Auth::logout();
-
+    
         // Cek role user dan arahkan ke halaman dashboard sesuai role
         if ($user->role === 'industri') {
             if (Auth::guard('industri')->attempt($request->only('email', 'password'))){
                 $request->session()->regenerate();
-                
+                Mail::to($user->email)->send(new LoginNotificationMail($user));
                 return redirect()->route('industri.dashboard')->with('success', 'Login successful!');
             } 
-            
         } elseif ($user->role === 'sekolah') {
             if (Auth::guard('sekolah')->attempt($request->only('email', 'password'))){
                 $request->session()->regenerate();
-                
+                Mail::to($user->email)->send(new LoginNotificationMail($user));
                 return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
             }
         } elseif ($user->role === 'siswa') {
             if (Auth::attempt($request->only('email', 'password'))){
                 $request->session()->regenerate();
-
+                Mail::to($user->email)->send(new LoginNotificationMail($user));
                 return redirect()->route('user.dashboard')->with('success', 'Login successful!');
             }
         }
-
-        return back()->withErrors(['email' => 'Invalid email or password.']);
-    }   
-       
     
-
+        return back()->withErrors(['email' => 'Invalid email or password.']);
+    }
+    
         public function logout(Request $request)
         {
             Auth::logout();
@@ -74,8 +79,6 @@ class LoginController extends Controller
     
             return redirect('/login')->with('success', 'Anda berhasil logout.');       
         }
-    
-        // Proses logout
         public function logoutsekolah(Request $request)
         {
             Auth::guard('sekolah')->logout();
@@ -97,14 +100,3 @@ class LoginController extends Controller
             return redirect('/login')->with('success', 'Anda berhasil logout.');       
         }
     }
-
-     // // Coba autentikasi pengguna
-        // if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-        //     // Cek role pengguna dan redirect ke halaman sesuai
-        //     if (Auth::user()->role === 'industri') {
-        //         return redirect()->route('industri.dashboard');
-        //     } elseif (Auth::user()->role === 'siswa') {
-        //         return redirect()->route('user.dashboard'); 
-        //     } elseif (Auth::user()->role === 'sekolah') {
-        //     return redirect()->route('admin.dashboard'); 
-        // 

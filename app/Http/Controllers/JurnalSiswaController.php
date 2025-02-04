@@ -34,14 +34,11 @@ class JurnalSiswaController extends Controller
         $users = Auth::user();
         return view('pages-user.jurnal.edit', compact('jurnal'));
     }
-    
-    
     public function create()
     {
         return view('pages-user.jurnal.create');
     }
 
-   // store method
     public function store(Request $request)
     {
         // Validasi input dari form
@@ -49,15 +46,28 @@ class JurnalSiswaController extends Controller
             'kegiatan' => 'required|string|max:100',
             'tanggal' => 'required|date',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
+            'waktu_selesai' => 'required|after:waktu_mulai',
             'foto_kegiatan' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
+        ], [
+            'kegiatan.required' => 'Deskripsi kegiatan wajib diisi.',
+            'kegiatan.max' => 'Deskripsi kegiatan tidak boleh lebih dari 100 karakter.',
+            'tanggal.required' => 'Tanggal laporan wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'waktu_mulai.required' => 'Jam mulai wajib diisi.',
+            'waktu_selesai.required' => 'Jam selesai wajib diisi.',
+            'waktu_selesai.after' => 'Jam selesai harus lebih besar dari jam mulai.',
+            'foto_kegiatan.image' => 'File harus berupa gambar.',
+            'foto_kegiatan.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'foto_kegiatan.max' => 'Ukuran gambar maksimal 3MB.',
         ]);
-
+    
         // Mendapatkan data pengguna yang login
         $users = Auth::user();
-
-        $fotoPath = $request->file('foto_kegiatan') ? $request->file('foto_kegiatan')->store('kegiatan', 'public') : null;
-
+    
+        $fotoPath = $request->file('foto_kegiatan') 
+            ? $request->file('foto_kegiatan')->store('kegiatan', 'public') 
+            : null;
+    
         // Menyimpan data jurnal kegiatan ke dalam database
         Jurnal::create([
             'kegiatan' => $request->kegiatan,
@@ -65,53 +75,54 @@ class JurnalSiswaController extends Controller
             'waktu_mulai' => $request->waktu_mulai,
             'waktu_selesai' => $request->waktu_selesai,
             'foto_kegiatan' => $fotoPath,
-            'user_id' => $users->id,  // ID pengguna yang login (siswa)
+            'user_id' => $users->id,
         ]);
-
-        // // Menghitung jumlah jurnal yang sudah dikirim oleh pengguna
-        // $jumlahJurnal = Jurnal::where('user_id', $users->id)->count();
-
-        // Redirect ke halaman jurnal kegiatan dengan pesan sukses dan jumlah jurnal yang baru
+    
         return redirect()->route('jurnal-siswa.index')->with('success', 'Jurnal kegiatan berhasil ditambahkan!');
-                                                    
-    }
-
+    }    
 
     public function show($id)
     {
         $jurnal = Jurnal::findOrFail($id);
         return view('pages-user.jurnal.index', compact('jurnal'));
     }
-
-   
     public function update(Request $request, $id)
     {
         $request->validate([
             'kegiatan' => 'required|string|max:100',
             'tanggal' => 'required|date',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
+            'waktu_selesai' => 'required|after:waktu_mulai',
             'foto_kegiatan' => 'nullable|image|mimes:jpeg,png,jpg|max:5000',
+        ], [
+            'kegiatan.required' => 'Deskripsi kegiatan wajib diisi.',
+            'kegiatan.max' => 'Deskripsi kegiatan tidak boleh lebih dari 100 karakter.',
+            'tanggal.required' => 'Tanggal laporan wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'waktu_mulai.required' => 'Jam mulai wajib diisi.',
+            'waktu_selesai.required' => 'Jam selesai wajib diisi.',
+            'waktu_selesai.after' => 'Jam selesai harus lebih besar dari jam mulai.',
+            'foto_kegiatan.image' => 'File harus berupa gambar.',
+            'foto_kegiatan.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'foto_kegiatan.max' => 'Ukuran gambar maksimal 3MB.',
         ]);
-
+    
         $jurnal = Jurnal::findOrFail($id);
-
-        
-
+    
         if ($request->hasFile('foto_kegiatan')) {
             if ($jurnal->foto_kegiatan) {
                 Storage::disk('public')->delete($jurnal->foto_kegiatan);
             }
             $jurnal->foto_kegiatan = $request->file('foto_kegiatan')->store('kegiatan', 'public');
         }
-
+    
         $jurnal->update([
             'kegiatan' => $request->kegiatan,
             'tanggal' => $request->tanggal,
             'waktu_mulai' => $request->waktu_mulai,
             'waktu_selesai' => $request->waktu_selesai,
         ]);
-
+    
         return redirect()->route('jurnal-siswa.index')->with('success', 'Jurnal berhasil diperbarui!');
     }
 

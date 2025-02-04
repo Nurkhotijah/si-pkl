@@ -62,30 +62,14 @@ class UserController extends Controller
         // Return PDF untuk di-download
         return $pdf->download($siswa->name . '-sertifikat.pdf');
     }
-    
-    
     public function showprofilsiswa()
     {
         $profilesiswa = User::with(['sekolah', 'profile', 'pengajuan.sekolah', 'pengajuan.pkl'])->findOrFail(Auth::user()->id);
 
         return view('pages-user.profile', compact('profilesiswa'));
     }
-
     public function laporanpkl()
     {
     return view('pages-user.laporan-pkl'); 
     }
 }
-
-
-    // public function logout(Request $request)
-    // {
-    //     Auth::logout(); // Menggunakan facade Auth untuk logout
-
-    //     $request->session()->invalidate();
-    //     $request->session()->regenerateToken();
-
-    //     return redirect()->route('login');
-    // }
-
-    

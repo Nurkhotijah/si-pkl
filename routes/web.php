@@ -20,7 +20,6 @@ use App\Http\Controllers\SekolahController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 // Route login
 Route::get('/login', [LoginController::class, 'showLoginForm']) ->name('viewlogin');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -119,6 +118,7 @@ Route::prefix('pkl')->name('pkl.')->group(function () {
 
 Route::prefix('pengajuan')->name('pengajuan.')->group(function () {
     Route::get('list-siswa/{id_pkl}', [PengajuanController::class, 'index'])->name('index');
+    Route::get('/edit/{id_pkl}', [PengajuanController::class, 'edit'])->name('edit');
     Route::get('/create/{id_pkl}', [PengajuanController::class, 'create'])->name('create');
     Route::post('/store/{id_pkl}', [PengajuanController::class, 'store'])->name('store');
     Route::delete('/delete/{id}', [PengajuanController::class, 'destroy'])->name('delete');
@@ -157,7 +157,7 @@ Route::put('/profile/update', [AdminController::class, 'update'])->name('profile
 /* -------------------------------------------------------------------------- */
 Route::middleware(['auth:web'])->group(function () {
 
-Route::get('/dashboard-user', [UserController::class, 'dashboard'])->name('user.dashboard');
+Route::get('/dashboard-siswa', [UserController::class, 'dashboard'])->name('user.dashboard');
 
 Route::prefix('jurnal-siswa')->name('jurnal-siswa.')->group(function () {
     Route::get('', [JurnalSiswaController::class, 'index'])->name('index');
@@ -198,8 +198,3 @@ Route::get('/cetak-sertifikat/{id}', [UserController::class, 'cetakSertifikat'])
 /*                                   END SISWA/USER                           */
 /* -------------------------------------------------------------------------- */
 
-
-// Route::get('/riwayat-absensi', [KehadiranController::class, 'index'])->name('riwayat-absensi');
-
-// Route untuk mengganti kata sandi
-// Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');

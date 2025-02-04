@@ -15,34 +15,53 @@ use Illuminate\Console\Command;
 class KehadiranController extends Controller
 {
     
-    // Menampilkan riwayat kehadiran
     public function index(Request $request)
-    {
-        $query = Kehadiran::where('user_id', Auth::id());
+{
+    $query = Kehadiran::where('user_id', Auth::id());
 
-        // Filter berdasarkan tanggal jika tersedia
-        if ($request->has('tanggal') && $request->tanggal) {
-            $query->whereDate('tanggal', $request->tanggal);
-        }
-
-        // Ambil semua data kehadiran
-        $kehadiran = $query->orderBy('tanggal', 'desc')->get();
-            
-        // Ambil data profile untuk mengecek tanggal selesai PKL
-        $profile = Profile::where('user_id', Auth::id())->first();
-    
-        // Cek apakah PKL sudah selesai
-        $isPklSelesai = $profile ? Carbon::parse($profile->tanggal_selesai)->isPast() : false;
-    
-        return view('pages-user.riwayat-absensi', compact('kehadiran', 'isPklSelesai'));
+    // Filter berdasarkan tanggal jika tersedia
+    if ($request->has('tanggal') && $request->tanggal) {
+        $query->whereDate('tanggal', $request->tanggal);
     }
+
+    // Ambil semua data kehadiran
+    $kehadiran = $query->orderBy('tanggal', 'desc')->get();
+
+    // Cek apakah user sudah absen atau izin hari ini
+    $todayRecord = Kehadiran::where('user_id', Auth::id())
+        ->whereDate('tanggal', now()->toDateString())
+        ->first();
     
+    $sudahAbsen = $todayRecord && $todayRecord->foto_masuk;
+    $sudahIzin = $todayRecord && $todayRecord->foto_izin;
+
+    // Ambil data profile untuk mengecek tanggal selesai PKL
+    $profile = Profile::where('user_id', Auth::id())->first();
+
+    // Cek apakah PKL sudah selesai
+    $isPklSelesai = $profile ? Carbon::parse($profile->tanggal_selesai)->isPast() : false;
+
+    return view('pages-user.riwayat-absensi', compact('kehadiran', 'isPklSelesai'));
+    }
 
     public function store(Request $request)
 {
+    // Cek apakah user sudah absen atau izin hari ini
+    $todayRecord = Kehadiran::where('user_id', Auth::id())
+        ->whereDate('tanggal', now()->toDateString())
+        ->first();
+
+    if ($todayRecord) {
+        if ($todayRecord->foto_masuk && $request->hasFile('foto_izin')) {
+            return response()->json(['message' => 'Anda sudah absen hari ini, tidak bisa mengajukan izin!'], 403);
+        }
+        if ($todayRecord->foto_izin && $request->hasFile('foto_masuk')) {
+            return response()->json(['message' => 'Anda sudah mengajukan izin hari ini, tidak bisa absen!'], 403);
+        }
+    }
+
     // Validasi input
     $request->validate([
-        'id'=> 'nullable',
         'foto_keluar' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
         'foto_masuk' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
         'foto_izin' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
@@ -65,10 +84,10 @@ class KehadiranController extends Controller
     // Menentukan status kehadiran
     $status = $fotoIzin ? 'Izin' : 'Hadir';
 
-    if ($request->id){
-        // update data kehadiran
+    if ($request->id) {
+        // Update data kehadiran
         Kehadiran::find($request->id)?->update([
-            'waktu_keluar' => $status === 'Hadir' ? now()->toTimeString() : null, // Set waktu pulang hanya jika status 'Hadir'
+            'waktu_keluar' => $status === 'Hadir' ? now()->toTimeString() : null,
             'foto_keluar' => $fotoMasuk,
         ]);
     } else {
@@ -77,7 +96,7 @@ class KehadiranController extends Controller
             'user_id' => Auth::id(),
             'sekolah_id' => Auth::user()->profile->id_sekolah,
             'tanggal' => now(),
-            'waktu_masuk' => $status === 'Hadir' ? now()->toTimeString() : null, // Set waktu masuk hanya jika status 'Hadir'
+            'waktu_masuk' => $status === 'Hadir' ? now()->toTimeString() : null,
             'status' => $status,
             'foto_masuk' => $fotoMasuk,
             'foto_izin' => $fotoIzin,
@@ -137,7 +156,5 @@ class KehadiranController extends Controller
         // Mengunduh PDF
         return $pdf->download('rekap-kehadiran-' . $user->name . '.pdf');
     }
-    
-    
     
 }    

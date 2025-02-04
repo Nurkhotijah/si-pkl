@@ -21,7 +21,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <select name="user_id" class="w-full p-3 border border-gray-300 rounded-md">
-                    <option value="" disabled selected>Pilih Nama Lengkap</option>
+                    <option value="" disabled selected>Pilih Nama Siswa</option>
                     @foreach ($siswa as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                     @endforeach

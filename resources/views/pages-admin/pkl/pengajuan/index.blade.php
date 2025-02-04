@@ -44,8 +44,8 @@
                             <td class="py-2 px-4  border-b border-gray-300 text-center">{{ $loop->iteration }}</td>
                             <td class="py-2 px-4  border-b border-gray-300">{{ $item->nama }}</td>
                             <td class="py-2 px-4  border-b border-gray-300">{{ $item->jurusan }}</td>
-                            <td class="py-2 px-4  border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->locale('id')->format('d F Y') }}</td>
-                            <td class="py-2 px-4  border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($item->tanggal_selesai)->locale('id')->format('d F Y') }}</td>
+                            <td class="py-2 px-4  border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->locale('id')->translatedFormat('d F Y') }}</td>
+                            <td class="py-2 px-4  border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($item->tanggal_selesai)->locale('id')->translatedFormat('d F Y') }}</td>
                             <td class="py-2 px-4  border-b border-gray-300 text-center">
                                 <a href="{{ asset('storage/' . $item->cv_file) }}" class="bg-blue-500 text-white text-xs px-2 py-1 rounded hover:bg-blue-600 transition duration-300">
                                     <i class="fas fa-file-pdf"></i>
@@ -58,15 +58,23 @@
                                 <span id="status-{{ $item->id }}" class="bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">{{ $item->status_persetujuan }}</span>
                             @elseif ($item->status_persetujuan == 'ditolak')
                                 <span id="status-{{ $item->id }}" class="bg-red-200 text-red-800 text-xs px-2 py-1 rounded-full">{{ $item->status_persetujuan }}</span>
-                            @endif                            </td>
-                            <td class="py-2 px-3  border-b border-gray-300 text-center">
-                                <form action="{{ route('pengajuan.delete', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus siswa ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-500 text-white text-xs px-2 py-1 rounded shadow hover:bg-red-600 transition duration-300 ease-in-out">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                            @endif                            
+                            </td>
+                             <td class="py-2 px-3 border-b border-gray-300 text-center">
+                                <div class="flex justify-center space-x-2">
+                                    {{-- <!-- Edit Button -->
+                                    <a href="{{ route('pengajuan.edit', $item->id) }}" class="bg-yellow-500 text-white text-xs px-2 py-1 rounded shadow hover:bg-yellow-600 transition duration-300 ease-in-out">
+                                        <i class="fas fa-edit"></i>
+                                    </a> --}}
+                                    <!-- Delete Button -->
+                                    <form action="{{ route('pengajuan.delete', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus siswa ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 text-white text-xs px-2 py-1 rounded shadow hover:bg-red-600 transition duration-300 ease-in-out">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach

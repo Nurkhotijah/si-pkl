@@ -36,28 +36,28 @@ class IndustriController extends Controller
 /* -------------------------------------------------------------------------- */
 /*                                  START KEHADIRAN                           */
 /* -------------------------------------------------------------------------- */
-public function Kehadiran(Request $request)
-{
-    $search = $request->input('search'); // Ambil input pencarian
+    public function Kehadiran(Request $request)
+    {
+        $search = $request->input('search'); // Ambil input pencarian
 
-    // Query untuk mengambil data kehadiran berdasarkan pencarian
-    $kehadiranQuery = Kehadiran::select('user_id')
-        ->distinct()
-        ->with(['user', 'profile.sekolah']);
+        // Query untuk mengambil data kehadiran berdasarkan pencarian
+        $kehadiranQuery = Kehadiran::select('user_id')
+            ->distinct()
+            ->with(['user', 'profile.sekolah']);
 
-    if ($search) {
-        $kehadiranQuery->whereHas('user', function ($query) use ($search) {
-            $query->where('name', 'like', "%$search%"); // Pencarian berdasarkan nama user
-        })
-        ->orWhereHas('profile.sekolah', function ($query) use ($search) {
-            $query->where('nama', 'like', "%$search%"); // Pencarian berdasarkan nama sekolah
-        });
+        if ($search) {
+            $kehadiranQuery->whereHas('user', function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%"); // Pencarian berdasarkan nama user
+            })
+            ->orWhereHas('profile.sekolah', function ($query) use ($search) {
+                $query->where('nama', 'like', "%$search%"); // Pencarian berdasarkan nama sekolah
+            });
+        }
+
+        $kehadiran = $kehadiranQuery->get(); // Ambil data kehadiran yang sudah difilter
+
+        return view('pages-industri.kelola-kehadiran', compact('kehadiran'));
     }
-
-    $kehadiran = $kehadiranQuery->get(); // Ambil data kehadiran yang sudah difilter
-
-    return view('pages-industri.kelola-kehadiran', compact('kehadiran'));
-}
 
     public function detail($userId, Request $request)
     {
@@ -287,7 +287,6 @@ protected function createSiswaAccount(Pengajuan $pengajuanSiswa)
     ]);
 }
 
-
 protected function generateUniqueEmail($email, $pengajuanSiswa)
 {
     $originalEmail = $email;
@@ -310,6 +309,8 @@ protected function generateUniqueEmail($email, $pengajuanSiswa)
 /* -------------------------------------------------------------------------- */
 /*                                  START PENILAIAN                           */
 /* -------------------------------------------------------------------------- */
+
+
     public function indexpenilaian()
     {
         $penilaian = Penilaian::with(['user.profile.sekolah'])
@@ -321,11 +322,19 @@ protected function generateUniqueEmail($email, $pengajuanSiswa)
 
     public function create()
     {
-        $siswa = User::where('role', 'siswa')->get();
+        // Ambil semua siswa yang sudah dipilih sebelumnya
+        $siswaTerpilih = Penilaian::pluck('user_id')->toArray();
+
+        // Ambil siswa yang belum dipilih
+        $siswa = User::where('role', 'siswa')
+                    ->whereNotIn('id', $siswaTerpilih)
+                    ->get();
+
         $sekolah = Profile::with('sekolah')->get();
+
         return view('pages-industri.penilaian.create', compact('siswa', 'sekolah'));
     }
-
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -343,7 +352,7 @@ protected function generateUniqueEmail($email, $pengajuanSiswa)
     }
 
     public function show($id)
-{
+    {
     $penilaian = Penilaian::with(['user.sekolah.profile'])->findOrFail($id);
 
     // Ambil tanggal mulai dan selesai dari tabel profile

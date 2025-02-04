@@ -70,6 +70,13 @@ class PklController extends Controller
             'tahun' => 'required|string|max:255',
             'pembimbing' => 'required|string|max:255',
             'lampiran' => 'required|mimes:pdf|max:5000',
+        ], [
+            'judul.required' => 'Judul PKL wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'pembimbing.required' => 'Nama pembimbing wajib diisi.',
+            'lampiran.required' => 'Lampiran wajib diunggah.',
+            'lampiran.mimes' => 'Lampiran harus berupa file PDF.',
+            'lampiran.max' => 'Lampiran maksimal 5MB.',
         ]);
     
         // Simpan file lampiran

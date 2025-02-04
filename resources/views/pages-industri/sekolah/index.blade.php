@@ -4,11 +4,6 @@
 
 @section('content')
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
 
 <div class="bg-gray-100 font-poppins">
     <main class="p-6 overflow-y-auto h-full">

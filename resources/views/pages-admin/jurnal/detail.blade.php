@@ -33,7 +33,7 @@
                         <tr class="jurnal-row bg-white hover:bg-gray-50 transition duration-200 ease-in-out text-xs">
                             <td class="py-2 px-4 border-b text-center">{{ $loop->iteration }}</td>
                             <td class="py-2 px-4 border-b text-left">{{ $item->kegiatan }}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->format('d F Y') }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
                             <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->waktu_mulai)->format('H:i') }}</td>
                             <td class="py-2 px-4 border-b text-center">{{ \Carbon\Carbon::parse($item->waktu_selesai)->format('H:i') }}</td>
                             <td class="py-2 px-4 border-gray-300 border-b text-center flex justify-center items-center">

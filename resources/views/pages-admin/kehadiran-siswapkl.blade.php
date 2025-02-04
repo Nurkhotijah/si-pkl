@@ -8,7 +8,7 @@
 <main class="p-6 overflow-y-auto h-full">
     <div class="max-w-7xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md">
         <div class="flex flex-col sm:flex-row justify-center items-center mb-4">
-            <h1 class="text-xl sm:text-xl font-bold mb-2 sm:mb-0">Kelola Kehadiran</h1>
+            <h1 class="text-xl sm:text-xl font-bold mb-2 sm:mb-0">Riwayat Kehadiran Siswa</h1>
         </div>          
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0 sm:space-x-4">
             <div class="relative w-full sm:w-auto text-xs">
@@ -17,7 +17,7 @@
             </div>
             <div class="mt-4 md:mt-0">
               <label class="mr-2" for="date"></label>
-              <input class="border rounded p-2 text-xs" id="dateInput" type="date" />
+              <input class="border rounded p-2 text-xs" id="dateInput" type="date" max="{{ now()->toDateString() }}"/>
           </div>
         </div>
         <div class="overflow-x-auto">
@@ -25,7 +25,7 @@
                 <thead class="bg-gray-200">
                     <tr class="font-semibold text-gray-700 border-b border-gray-300 text-xs">
                         <th class="py-3 px-4 text-left">No</th>
-                        <th class="py-3 px-4 text-left">Nama Lengkap</th>
+                        <th class="py-3 px-4 text-left">Nama </th>
                         <th class="py-3 px-4 text-left">Tanggal</th>
                         <th class="py-3 px-4 text-center">Waktu Masuk</th>
                         <th class="py-3 px-4 text-center">Waktu Keluar</th>
@@ -40,7 +40,7 @@
                         <tr class="kehadiran-row bg-white hover:bg-gray-50 transition duration-200 ease-in-out">
                             <td class="py-4 px-4 border-b border-gray-300">{{ $loop->iteration }}</td>
                             <td class="py-4 px-4 border-b border-gray-300">{{ $data->user->name }}</td>
-                            <td class="py-4 px-4 border-b border-gray-300">{{ \Carbon\Carbon::parse($data->tanggal)->format('d F Y') }}</td>
+                            <td class="py-4 px-4 border-b border-gray-300">{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('d F Y') }}</td>
                             <td class="py-4 px-4 text-center border-b border-gray-300">{{ $data->waktu_masuk ? \Carbon\Carbon::parse($data->waktu_masuk)->format('H:i:s') : '-' }}</td>
                             <td class="py-4 px-4 text-center border-b border-gray-300">{{ $data->waktu_keluar ? \Carbon\Carbon::parse($data->waktu_keluar)->format('H:i:s') : '-' }}</td>
                             <td class="py-2 px-4 text-center border-b border-gray-300">

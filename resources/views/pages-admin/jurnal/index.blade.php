@@ -22,7 +22,7 @@
                 <thead class="bg-gray-200 font-semibold text-gray-700 border-b border-gray-300 text-xs">
                     <tr>
                         <th class="py-2 px-4 text-center">No</th>
-                        <th class="py-2 px-4 text-left">Nama Lengkap</th>
+                        <th class="py-2 px-4 text-left">Nama</th>
                         <th class="py-2 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>

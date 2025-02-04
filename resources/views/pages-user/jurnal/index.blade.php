@@ -41,7 +41,7 @@
                 <!-- Input Tanggal -->
                 <div class="flex sm:ml-auto items-center space-x-2 mt-2 sm:mt-0">
                     <label for="dateFilter" class="mr-2 text-xs"></label>
-                    <input type="date" name="tanggal" id="dateFilter" class="border rounded p-1 w-full sm:w-auto text-xs" value="{{ request('tanggal') }}" onchange="this.form.submit()">
+                    <input type="date" name="tanggal" id="dateFilter" class="border rounded p-1 w-full sm:w-auto text-xs" value="{{ request('tanggal') }}" max="{{ now()->toDateString() }}" onchange="this.form.submit()">
                 </div>
             </form>        
             
@@ -64,7 +64,7 @@
                             <tr>
                                 <td class="py-2 px-4 border-gray-300 text-gray-700 border-b text-center">{{ $index + 1 }}</td>
                                 <td class="py-2 px-4 border-gray-300 text-gray-700 border-b text-left">{{ $siswa->kegiatan }}</td>
-                                <td class="py-2 px-4 border-gray-300 text-gray-700 border-b text-center">{{ \Carbon\Carbon::parse($siswa->tanggal)->format('d F Y') }}</td>
+                                <td class="py-2 px-4 border-gray-300 text-gray-700 border-b text-center">{{ \Carbon\Carbon::parse($siswa->tanggal)->translatedFormat('d F Y') }}</td>
                                 <td class="py-2 px-4 border-gray-300 text-gray-700 border-b text-center">{{ \Carbon\Carbon::parse($siswa->waktu_mulai)->format('H:i') }}</td>
                                 <td class="py-2 px-4 border-gray-300 text-gray-700 border-b text-center">{{ \Carbon\Carbon::parse($siswa->waktu_selesai)->format('H:i') }}</td>
                                 <td class="py-2 px-4 border-gray-300 border-b text-center">

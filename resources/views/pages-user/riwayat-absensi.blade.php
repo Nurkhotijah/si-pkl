@@ -15,11 +15,17 @@
                     <input type="hidden" name="jenis_absen" value="masuk">
                     <div class="flex flex-col md:flex-row md:space-x-4 mb-4 md:mb-0 w-full">
                         <div class="flex space-x-2 mb-4 md:mb-0 w-full md:w-auto">
-                            <label for="uploadIzin" class="bg-blue-500 text-white text-xs px-4 py-2 rounded shadow hover:bg-blue-600 transition duration-300 ease-in-out cursor-pointer flex items-center w-full">
-                                <i class="fas fa-upload mr-2"></i> Upload Foto Izin
-                            </label>
-                            <input type="file" id="uploadIzin" name="foto_izin" class="hidden" accept="image/jpeg, image/png" onchange="submitForm()">
+                            @php $disableIzin = $disableIzin ?? false; @endphp
+                            @if(!$disableIzin)
+                                <label for="uploadIzin" class="bg-blue-500 text-white text-xs px-4 py-2 rounded shadow hover:bg-blue-600 transition duration-300 ease-in-out cursor-pointer flex items-center w-full">
+                                    <i class="fas fa-upload mr-2"></i> Upload Foto Izin
+                                </label>
+                                <input type="file" id="uploadIzin" name="foto_izin" class="hidden" accept="image/jpeg, image/png" onchange="submitForm()">
+                            @else
+                                <p class="text-gray-500 text-xs italic">Anda sudah absen hari ini, tidak bisa mengupload izin.</p>
+                            @endif
                         </div>
+                
             
                         <!-- Tombol Unduh Rekap Kehadiran -->
                     <div class="w-full md:w-auto">
@@ -34,12 +40,8 @@
                 <!-- Filter Tanggal -->
                 <div class="mt-4 md:mt-0">
                     <form action="{{ route('riwayat-absensi') }}" method="GET">
-                        <input 
-                            type="date" 
-                            name="tanggal" 
-                            class="border rounded p-2 w-full md:w-auto text-xs" 
-                            value="{{ request()->tanggal }}" 
-                            onchange="this.form.submit()">
+                        <input type="date" name="tanggal" class="border rounded p-2 w-full md:w-auto text-xs" value="{{ request()->tanggal }}" max="{{ now()->toDateString() }}" 
+                        onchange="this.form.submit() ">
                     </form>                    
                 </div>
             </div>
@@ -69,7 +71,7 @@
                             <td class="py-2 px-4 border-b border-gray-300">{{ Auth::user()->name }}</td>
                             
                             <!-- Tanggal -->
-                            <td class="py-2 px-4 border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($absensi->tanggal)->format('d F Y') }}</td>
+                            <td class="py-2 px-4 border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('d F Y') }}</td>
                             
                             <!-- Waktu Masuk -->
                             <td class="py-2 px-4 border-b border-gray-300 text-center">{{ $absensi->waktu_masuk ? \Carbon\Carbon::parse($absensi->waktu_masuk)->format('H:i:s') : '-' }}</td>
