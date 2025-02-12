@@ -21,11 +21,24 @@
                     <input class="border rounded p-2 pl-10 w-full" id="search" name="search" placeholder="Cari Tahun" type="text" value="{{ request('search') }}">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </form>                
-                <a href="{{ Auth::user()->sekolah->status === 'diterima' ? route('pkl.create') : route('pkl.index').'?sekolah belum diterima' }}" 
-                    class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 transition duration-300 ease-in-out mt-4 sm:mt-0"
-                    {{ Auth::user()->sekolah->status !== 'diterima' ? 'disabled' : '' }}>
-                    <i class="fas fa-plus mr-2 text-xs"></i>Tambah Data
-                </a>
+                <a href="javascript:void(0);" 
+    onclick="{{ Auth::user()->sekolah->status === 'diterima' ? 'window.location.href=\''.route('pkl.create').'\' ' : 'openModal()' }}"
+    class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 transition duration-300 ease-in-out mt-4 sm:mt-0"
+    id="btn-tambah-data">
+    <i class="fas fa-plus mr-2 text-xs"></i>Tambah Data
+</a>
+ 
+                 <!-- Modal Peringatan -->
+<div id="modal-pending" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-lg font-bold mb-2">Peringatan</h2>
+        <p class="text-gray-700 text-sm">Sekolah Anda belum disetujui oleh industri. Anda tidak bisa menambahkan data PKL.</p>
+        <div class="mt-4 flex justify-end">
+            <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Tutup</button>
+        </div>
+    </div>
+</div>
+           
             </div>            
             <div class="overflow-x-auto">
                 <table class="w-full table-auto border-collapse">
@@ -66,6 +79,15 @@
 </body>
 
 <script>
+     function openModal() {
+        document.getElementById('modal-pending').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('modal-pending').classList.add('hidden');
+    }
+
+    
     const ITEMS_PER_PAGE = 10;
     let currentPage = 1;
     let filteredData = [];

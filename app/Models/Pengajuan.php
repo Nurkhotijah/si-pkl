@@ -37,8 +37,10 @@ class Pengajuan extends Model
 
     
     public function pengajuan()
-{
+    {
     return $this->hasOne(Pengajuan::class, 'user_id');
-}
+    }
+
+    
 
 }

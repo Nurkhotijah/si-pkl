@@ -4,19 +4,37 @@
 
 @section('content')
 <div class="bg-gray-100">
-    <main class="p-6 overflow-y-auto h-full">
+    <main class="p-6 overflow-y-auto h-full ml-4">
+        <div class="bg-blue-100 px-4 py-2 ml-6 my-2 rounded-md text-xs flex items-center max-w-md w-full sm:w-2/3">
+            <svg viewBox="0 0 24 24" class="text-blue-600 w-4 h-4 mr-2">
+                <path fill="currentColor"
+                    d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm.25,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12.25,5ZM14.5,18.5h-4a1,1,0,0,1,0-2h.75a.25.25,0,0,0,.25-.25v-4.5a.25.25,0,0,0-.25-.25H10.5a1,1,0,0,1,0-2h1a2,2,0,0,1,2,2v4.75a.25.25,0,0,0,.25.25h.75a1,1,0,1,1,0,2Z">
+                </path>
+            </svg>
+            <span class="text-blue-800">Tombol hanya dapat diklik jika siswa telah menyelesaikan PKL.</span>
+        </div>
+<!-- Flash Error Message -->
+        @if(session('error'))
+        <div id="flash-message" class="bg-red-100 px-4 py-2 ml-6 my-2 rounded-md text-xs flex items-center max-w-md w-full sm:w-2/3">
+            <svg viewBox="0 0 24 24" class="text-red-600 w-4 h-4 mr-2">
+                <path fill="currentColor" d="M12,0A12,12,0,1,0,24,12A12.013,12.013,0,0,0,12,0Zm.25,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12.25,5ZM14.5,18.5h-4a1,1,0,0,1,0-2h.75a.25.25,0,0,0,.25-.25v-4.5a.25.25,0,0,0-.25-.25H10.5a1,1,0,0,1,0-2h1a2,2,0,0,1,2,2v4.75a.25.25,0,0,0,.25.25h.75a1,1,0,1,1,0,2Z"></path>
+            </svg>
+            <span class="text-red-800">{{ session('error') }}</span>
+        </div>
+        <script>
+            setTimeout(() => {
+                document.getElementById('flash-message').style.display = 'none';
+            }, 3000);
+        </script>
+        @endif
+
+        <main class="p-6 overflow-y-auto h-full">
         <div class="max-w-7xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md">
+            
             <!-- Header Section -->
             <div class="mb-4 text-center">
                 <h1 class="text-xl sm:text-xl font-semibold mb-2 sm:mb-4">Data Siswa</h1>
-                <div class="bg-blue-100 px-4 py-2 ml-0 my-2 rounded-md text-xs flex items-center max-w-md shadow-sm w-full sm:w-2/3">
-                    <svg viewBox="0 0 24 24" class="text-blue-600 w-4 h-4 mr-2">
-                        <path fill="currentColor"
-                            d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm.25,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12.25,5ZM14.5,18.5h-4a1,1,0,0,1,0-2h.75a.25.25,0,0,0,.25-.25v-4.5a.25.25,0,0,0-.25-.25H10.5a1,1,0,0,1,0-2h1a2,2,0,0,1,2,2v4.75a.25.25,0,0,0,.25.25h.75a1,1,0,1,1,0,2Z">
-                        </path>
-                    </svg>
-                    <span class="text-blue-800">Tombol hanya dapat diklik jika siswa telah menyelesaikan PKL.</span>
-                </div>
+                
                 
                 <div class="flex flex-col text-xs sm:flex-row items-center justify-between space-y-2 sm:space-y-0 sm:space-x-4">
                     <div class="relative w-full sm:w-auto">
@@ -25,12 +43,6 @@
                     </div>
                 </div>
             </div>
-            @if(session('error'))
-            <div id="flash-message" class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-         @endif
-
 
             <!-- Table Section -->
             <div class="overflow-x-auto">
@@ -38,7 +50,7 @@
                     <thead class="bg-gray-200 font-semibold text-gray-700 border-b border-gray-300 text-xs">
                         <tr>
                             <th class="py-2 px-4 text-center">No</th>
-                            <th class="py-2 px-4 text-left">Nama Siswa</th>
+                            <th class="py-2 px-4 text-left">Nama</th>
                             <th class="py-2 px-4 text-left">Jurusan</th>
                             <th class="py-2 px-4 text-center">Nilai</th>
                             <th class="py-2 px-4 text-center">Kehadiran</th>
@@ -118,15 +130,9 @@
 </div>
 
 <script>
-// Flash message timeout
-window.onload = function () {
-    const flashMessage = document.getElementById("flash-message");
-    if (flashMessage) {
-        setTimeout(function () {
-            flashMessage.classList.add("hidden");
-        }, 3000); // Hide after 3 seconds
-    }
-};
+  setTimeout(() => {
+            document.getElementById('flash-message').style.display = 'none';
+        }, 3000);
 
 // Search function
 function searchTable() {
@@ -214,5 +220,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-
 @endsection

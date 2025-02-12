@@ -15,7 +15,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->time('waktu_masuk')->nullable();
             $table->time('waktu_keluar')->nullable();
-            $table->enum('status', ['hadir', 'izin', 'tidak hadir'])->default('hadir');
+            $table->enum('status', ['hadir', 'izin', 'tidak hadir'])->default('tidak hadir');
             $table->string('foto_masuk')->nullable(); // Foto saat masuk
             $table->string('foto_keluar')->nullable(); // Foto saat keluar
             $table->string('foto_izin')->nullable(); // File izin jika ada

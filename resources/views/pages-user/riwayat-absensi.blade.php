@@ -51,7 +51,7 @@
                     <thead class="bg-gray-200">
                         <tr class="text-gray-600 text-xs">
                             <th class="py-3 px-4 text-center  font-semibold text-gray-700 border-b border-gray-300">No</th>
-                            <th class="py-3 px-4 text-center  font-semibold text-gray-700 border-b border-gray-300">Nama Lengkap</th>
+                            {{-- <th class="py-3 px-4 text-center  font-semibold text-gray-700 border-b border-gray-300">Nama Lengkap</th> --}}
                             <th class="py-3 px-4 text-center  font-semibold text-gray-700 border-b border-gray-300">Tanggal</th>
                             <th class="py-3 px-4 text-center  font-semibold text-gray-700 border-b border-gray-300">Waktu Masuk</th>
                             <th class="py-3 px-4 text-center  font-semibold text-gray-700 border-b border-gray-300">Waktu Keluar</th>
@@ -68,7 +68,7 @@
                             <td class="py-2 px-4 border-b border-gray-300 text-center">{{ $loop->iteration }}</td>
                             
                             <!-- Nama Lengkap -->
-                            <td class="py-2 px-4 border-b border-gray-300">{{ Auth::user()->name }}</td>
+                            {{-- <td class="py-2 px-4 border-b border-gray-300">{{ Auth::user()->name }}</td> --}}
                             
                             <!-- Tanggal -->
                             <td class="py-2 px-4 border-b border-gray-300 text-center">{{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('d F Y') }}</td>
@@ -89,7 +89,7 @@
                                          title="Klik untuk memperbesar">
                                 </a>
                                 @else
-                                <span class="text-gray-400">Tidak ada foto</span>
+                                <span class="text-gray-500">-</span>
                                 @endif
                             </td>
                             
@@ -103,7 +103,7 @@
                                          title="Klik untuk memperbesar">
                                 </a>
                                 @else
-                                <span class="text-gray-400">Tidak ada foto</span>
+                                <span class="text-gray-500">-</span>
                                 @endif
                             </td>
                             
@@ -117,7 +117,7 @@
                                          title="Klik untuk memperbesar">
                                 </a>
                                 @else
-                                <span class="text-gray-400">Tidak ada foto izin</span>
+                                <span class="text-gray-500">-</span>
                                 @endif
                             </td>
                             

@@ -41,26 +41,28 @@ class JurnalSiswaController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input dari form
         $request->validate([
-            'kegiatan' => 'required|string|max:100',
+            'kegiatan' => 'required|string|min:100|max:255', // Tambahkan min:100 dan ubah max menjadi 255
             'tanggal' => 'required|date',
             'waktu_mulai' => 'required',
             'waktu_selesai' => 'required|after:waktu_mulai',
-            'foto_kegiatan' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
+            'foto_kegiatan' => 'required|image|mimes:jpeg,png,jpg|max:3000',
         ], [
             'kegiatan.required' => 'Deskripsi kegiatan wajib diisi.',
-            'kegiatan.max' => 'Deskripsi kegiatan tidak boleh lebih dari 100 karakter.',
+            'kegiatan.min' => 'Deskripsi kegiatan minimal 100 karakter.', // Tambahkan pesan error untuk min
+            'kegiatan.max' => 'Deskripsi kegiatan tidak boleh lebih dari 255 karakter.', // Ubah max menjadi 255
             'tanggal.required' => 'Tanggal laporan wajib diisi.',
             'tanggal.date' => 'Format tanggal tidak valid.',
             'waktu_mulai.required' => 'Jam mulai wajib diisi.',
             'waktu_selesai.required' => 'Jam selesai wajib diisi.',
             'waktu_selesai.after' => 'Jam selesai harus lebih besar dari jam mulai.',
+            'foto_kegiatan.required' => 'Foto kegiatan wajib diunggah.',
             'foto_kegiatan.image' => 'File harus berupa gambar.',
             'foto_kegiatan.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
             'foto_kegiatan.max' => 'Ukuran gambar maksimal 3MB.',
         ]);
     
+
         // Mendapatkan data pengguna yang login
         $users = Auth::user();
     

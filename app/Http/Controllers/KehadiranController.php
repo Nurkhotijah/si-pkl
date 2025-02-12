@@ -64,7 +64,7 @@ class KehadiranController extends Controller
     $request->validate([
         'foto_keluar' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
         'foto_masuk' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
-        'foto_izin' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
+        'foto_izin' => 'nullable|mimes:pdf|max:5000',
     ]);
 
     // Menyimpan foto masuk jika ada

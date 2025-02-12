@@ -8,4 +8,5 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-Schedule::command('app:kehadiran-absen')->dailyAt("22:24");
+Schedule::command('app:kehadiran-absen')->dailyAt("20:15");
+Schedule::command('notification:clear')->hourly();

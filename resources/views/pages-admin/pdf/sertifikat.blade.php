@@ -127,7 +127,9 @@
             Sebagai pengakuan atas partisipasi dan kontribusi selama menjalankan <br>
             Praktik Kerja Lapangan di <strong>
                 PT Qelopak Teknologi Indonesia</strong>,
-            pada tanggal <strong>{{ $siswa->profile->tanggal_mulai }}</strong> hingga <strong>{{ $siswa->profile->tanggal_selesai }}</strong>.
+            pada tanggal <strong>{{ Carbon\Carbon::parse($siswa->profile->tanggal_mulai)->translatedFormat('d F Y') }}</strong> 
+            hingga 
+            <strong>{{ Carbon\Carbon::parse($siswa->profile->tanggal_selesai)->translatedFormat('d F Y') }}</strong>            
         </p>
         <div class="signature">
         </div>

@@ -32,15 +32,15 @@ class UserController extends Controller
             }
         }
     
-        // Hitung jumlah kehadiran
-        $jumlahKehadiran = Kehadiran::where('user_id', $user->id)
-            ->where('status', 'Hadir')
-            ->count();
+    $jumlahHadir = Kehadiran::where('user_id', $user->id)->where('status', 'hadir')->count();
+    $jumlahIzin = Kehadiran::where('user_id', $user->id)->where('status', 'izin')->count();
+    $jumlahTidakHadir = Kehadiran::where('user_id', $user->id)->where('status', 'tidak hadir')->count();
+
     
         // Hitung jumlah jurnal
         $jumlahJurnal = Jurnal::where('user_id', $user->id)->count();
     
-        return view('pages-user.Dashboard-user', compact('jumlahJurnal', 'jumlahKehadiran', 'buttonText', 'absenHariIni'));
+        return view('pages-user.Dashboard-user', compact('jumlahJurnal', 'jumlahHadir', 'jumlahIzin', 'jumlahTidakHadir', 'buttonText', 'absenHariIni'));
     }
     
     public function cetakSertifikat($id)

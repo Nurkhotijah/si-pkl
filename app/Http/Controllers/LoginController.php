@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Notification;
+use App\Mail\LoginNotificationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\LoginNotificationMail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,21 +26,37 @@ class LoginController extends Controller
     // Proses login
     public function login(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:5',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|regex:/^[a-zA-Z0-9@.]+$/',
+            'password' => 'required|min:5|regex:/^[a-zA-Z0-9]+$/',
         ], [
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 5 karakter.',
+            'email.regex' => 'Email hanya boleh mengandung huruf, angka, titik, dan @.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 5 karakter.',
+            'password.regex' => 'Kata sandi hanya boleh mengandung huruf dan angka, tanpa karakter khusus atau emoticon.',
         ]);
     
-        $user = User::where("email", $request->email)->first();
+        // Jika validasi gagal, kembalikan dengan semua pesan error
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
     
+        // Cek apakah email terdaftar
+        $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return back()->withErrors(['email' => 'Invalid email or password.']);
+            return back()->withErrors([
+                'email' => 'Email ini belum terdaftar.',
+                'password' => 'Silakan periksa kembali kata sandi Anda.', // Pesan tambahan agar muncul error juga di password
+            ])->withInput();
+        }
+    
+        // Cek apakah password benar
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+            return back()->withErrors([
+                'password' => 'Kata sandi salah.',
+            ])->withInput();
         }
     
         // Logout semua guard sebelum login
@@ -57,6 +75,12 @@ class LoginController extends Controller
             if (Auth::guard('sekolah')->attempt($request->only('email', 'password'))){
                 $request->session()->regenerate();
                 Mail::to($user->email)->send(new LoginNotificationMail($user));
+
+                // Simpan log login
+        Notification::create([
+            'user_id' => $user->id,
+            'message' => $user->name . ' telah login.',
+        ]);
                 return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
             }
         } elseif ($user->role === 'siswa') {
@@ -81,10 +105,17 @@ class LoginController extends Controller
         }
         public function logoutsekolah(Request $request)
         {
+            $user = Auth::guard('sekolah')->user();            
+            if ($user) {
+                // Simpan log logout
+                Notification::create([
+                    'user_id' => $user->id,
+                    'message' => $user->name . ' telah logout.',
+                ]);
+            }
+        
             Auth::guard('sekolah')->logout();
             $request->session()->invalidate();
-            
-     
             $request->session()->regenerateToken();
     
             return redirect('/login')->with('success', 'Anda berhasil logout.');       

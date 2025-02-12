@@ -73,9 +73,9 @@
         <h1>Kehadiran</h1>
 
         <div class="info">
-            <p><strong>Nama Siswa:</strong> {{ $user->name }}</p>
-            <p><strong>Sekolah:</strong> {{ $user->profile->sekolah->nama ?? 'Data Sekolah Tidak Tersedia' }}</p>
-            <p><strong>Periode PKL:</strong> {{ \Carbon\Carbon::parse($tanggalMulai)->format('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalSelesai)->format('d F Y') }}</p>
+            <p><strong>Nama:</strong> {{ $user->name }}</p>
+            <p><strong>Sekolah:</strong> {{ $user->profile->sekolah->nama}}</p>
+            <p><strong>Periode PKL:</strong> {{ \Carbon\Carbon::parse($tanggalMulai)->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalSelesai)->translatedFormat('d F Y') }}</p>
         </div>
 
         <table>

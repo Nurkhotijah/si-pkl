@@ -28,20 +28,27 @@ class AdminController extends Controller
         $query->where('user_id', Auth::id());
     })->count();
 
-    // Menghitung jumlah kehadiran yang terkait dengan user yang sedang login berdasarkan sekolah yang terhubung
-    $jumlahkehadiran = Kehadiran::whereHas('user.profile.sekolah', function ($query) {
-        $query->where('user_id', Auth::id());
-    })->count();
-
        // Menghitung jumlah siswa dengan role 'siswa' yang terkait dengan sekolah yang dimiliki oleh admin yang login
     $jumlahsiswa = User::where('role', 'siswa')
     ->whereHas('profile.sekolah', function ($query) {
         $query->where('user_id', Auth::id());
     })->count();
 
+    $jumlahHadir = Kehadiran::whereHas('user.profile.sekolah', function ($query) {
+        $query->where('user_id', Auth::id());
+    })->where('status', 'hadir')->count();
+
+    $jumlahIzin = Kehadiran::whereHas('user.profile.sekolah', function ($query) {
+        $query->where('user_id', Auth::id());
+    })->where('status', 'izin')->count();
+
+    $jumlahTidakHadir = Kehadiran::whereHas('user.profile.sekolah', function ($query) {
+        $query->where('user_id', Auth::id());
+    })->where('status', 'tidak hadir')->count();
+
 
     // Mengembalikan view dengan data jumlah jurnal dan jumlah kehadiran
-    return view('pages-admin.dashboard-admin', compact('jumlahjurnal', 'jumlahkehadiran', 'jumlahsiswa'));
+    return view('pages-admin.dashboard-admin', compact('jumlahjurnal', 'jumlahHadir', 'jumlahIzin', 'jumlahTidakHadir', 'jumlahsiswa'));
 }
 
 

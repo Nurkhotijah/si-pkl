@@ -119,6 +119,7 @@ Route::prefix('pkl')->name('pkl.')->group(function () {
 Route::prefix('pengajuan')->name('pengajuan.')->group(function () {
     Route::get('list-siswa/{id_pkl}', [PengajuanController::class, 'index'])->name('index');
     Route::get('/edit/{id_pkl}', [PengajuanController::class, 'edit'])->name('edit');
+    Route::put('/update/{id_pkl}', [PengajuanController::class, 'update'])->name('update');
     Route::get('/create/{id_pkl}', [PengajuanController::class, 'create'])->name('create');
     Route::post('/store/{id_pkl}', [PengajuanController::class, 'store'])->name('store');
     Route::delete('/delete/{id}', [PengajuanController::class, 'destroy'])->name('delete');

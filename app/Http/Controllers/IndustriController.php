@@ -24,14 +24,28 @@ use Illuminate\Support\Facades\Auth;
 class IndustriController extends Controller
 {
     public function dashboard()
-    {
-        $jumlahsiswa = User::where('role', 'siswa')->count(); // Menghitung jumlah pengguna dengan role siswa
-        $jumlahsekolah = User::where('role', 'sekolah')->count(); // Menghitung jumlah pengguna dengan role sekolah
-        $jumlahjurnal = Jurnal::count();
-        $jumlahkehadiran = Kehadiran::count();
-    
-        return view('pages-industri.dashboard-industri', compact('jumlahjurnal', 'jumlahkehadiran', 'jumlahsiswa', 'jumlahsekolah'));
+{
+    $jumlahsiswa = User::where('role', 'siswa')->count();
+    $jumlahsekolah = User::where('role', 'sekolah')->count();
+    $jumlahjurnal = Jurnal::count();
+    $jumlahkehadiran = Kehadiran::count();
+
+    // Hitung jumlah berdasarkan status kehadiran
+    $jumlahHadir = Kehadiran::where('status', 'hadir')->count();
+    $jumlahIzin = Kehadiran::where('status', 'izin')->count();
+    $jumlahTidakHadir = Kehadiran::where('status', 'tidak hadir')->count();
+
+    return view('pages-industri.dashboard-industri', compact(
+        'jumlahjurnal', 
+        'jumlahkehadiran', 
+        'jumlahsiswa', 
+        'jumlahsekolah', 
+        'jumlahHadir', 
+        'jumlahIzin', 
+        'jumlahTidakHadir'
+    ));
     }
+
 
 /* -------------------------------------------------------------------------- */
 /*                                  START KEHADIRAN                           */
@@ -127,7 +141,6 @@ class IndustriController extends Controller
         $item = Kehadiran::findOrFail($id);
         return view('pages-industri.edit-kehadiran', compact('item'));
     }
-
     public function update(Request $request, $userId)
 {
     // dd($userId);
@@ -162,7 +175,7 @@ class IndustriController extends Controller
             'kehadiran' => $dataKehadiran,
             'success' => 'Status kehadiran berhasil diperbarui',
         ]);
-}
+    }
 
 /* -------------------------------------------------------------------------- */
 /*                                  END KEHADIRAN                             */
@@ -181,7 +194,7 @@ class IndustriController extends Controller
     }
 
     public function showpkl(Request $request, string $id)
-{
+    {
     // Ambil input pencarian
     $search = $request->input('search');
 
@@ -197,11 +210,10 @@ class IndustriController extends Controller
         ->get();
 
     return view('pages-industri.sekolah.show', compact('listSekolah'));
-}
+    }
 
-
-public function updateStatusSiswa(Request $request)
-{
+    public function updateStatusSiswa(Request $request)
+    {  
     $validated = $request->validate([
         'id' => 'required',
         'status' => 'required',
@@ -258,10 +270,10 @@ public function updateStatusSiswa(Request $request)
         'success' => true,
         'message' => "Status siswa telah diperbarui menjadi {$status}.",
     ]);
-}
+    }
 
-protected function createSiswaAccount(Pengajuan $pengajuanSiswa)
-{
+    protected function createSiswaAccount(Pengajuan $pengajuanSiswa)
+    {
     // Membuat email yang unik
     $email = preg_replace('/\s+/', '-', $pengajuanSiswa->nama) . '@gmail.com';
     
@@ -285,10 +297,10 @@ protected function createSiswaAccount(Pengajuan $pengajuanSiswa)
         'tanggal_selesai' => $pengajuanSiswa->tanggal_selesai,
         'cv_file' => $pengajuanSiswa->cv_file,
     ]);
-}
+    }
 
-protected function generateUniqueEmail($email, $pengajuanSiswa)
-{
+    protected function generateUniqueEmail($email, $pengajuanSiswa)
+    {
     $originalEmail = $email;
     $counter = 1;
 
@@ -300,7 +312,7 @@ protected function generateUniqueEmail($email, $pengajuanSiswa)
     }
 
     return $email;
-}
+    }
 
 /* -------------------------------------------------------------------------- */
 /*                                  END PENGAJUAN                             */
@@ -336,20 +348,27 @@ protected function generateUniqueEmail($email, $pengajuanSiswa)
     }
     
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'sikap' => 'required|string',
-            'microteaching' => 'required|string', 
-            'kehadiran' => 'required|string',
-            'project' => 'required|string',
-        ]);
+{
+    $validated = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'sikap' => 'required|string',
+        'microteaching' => 'required|string', 
+        'kehadiran' => 'required|string',
+        'project' => 'required|string',
+    ], [
+        'user_id.required' => 'Nama siswa harus dipilih.',
+        'user_id.exists' => 'Siswa tidak valid.',
+        'sikap.required' => 'Penilaian sikap harus dipilih.',
+        'microteaching.required' => 'Penilaian microteaching harus dipilih.',
+        'kehadiran.required' => 'Penilaian kehadiran harus dipilih.',
+        'project.required' => 'Penilaian project harus dipilih.',
+    ]);
 
-        Penilaian::create($validated);
+    Penilaian::create($validated);
 
-        return redirect()->route('penilaian.index')
-            ->with('success', 'Penilaian berhasil disimpan!');
-    }
+    return redirect()->route('penilaian.index')
+        ->with('success', 'Penilaian berhasil disimpan!');
+}
 
     public function show($id)
     {

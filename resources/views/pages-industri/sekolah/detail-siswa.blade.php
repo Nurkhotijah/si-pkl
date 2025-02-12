@@ -4,27 +4,40 @@
 
 @section('content')
 <div class="bg-gray-100 font-poppins">
-    <main class="p-6 overflow-y-auto h-full">
-        <div class="max-w-7xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md">
-<div class="mb-4">
-    <h1 class="text-xl sm:text-xl font-semibold text-center mb-2 sm:mb-4">Siswa PKL</h1>
-    <div class="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 sm:space-x-4">
-        <div class="relative w-full sm:w-auto text-xs">
+    <main class="p-6 overflow-y-auto h-full ml-4">
+        @if(session('success'))
+        <div id="flash-message-success" class="bg-green-100 px-4 py-2 my-2 rounded-md text-xs flex items-center max-w-md w-full sm:w-2/3">
+            <svg viewBox="0 0 24 24" class="text-green-600 w-4 h-4 mr-2">
+                <path fill="currentColor" d="M12,0A12,12,0,1,0,24,12A12.013,12.013,0,0,0,12,0Zm.25,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12.25,5ZM14.5,18.5h-4a1,1,0,0,1,0-2h.75a.25.25,0,0,0,.25-.25v-4.5a.25.25,0,0,0-.25-.25H10.5a1,1,0,0,1,0-2h1a2,2,0,0,1,2,2v4.75a.25.25,0,0,0,.25.25h.75a1,1,0,1,1,0,2Z"></path>
+            </svg>
+            <span class="text-green-800">{{ session('success') }}</span>
+        </div>
+        <script>
+            setTimeout(() => {
+                document.getElementById('flash-message').style.display = 'none';
+            }, 3000);
+        </script>
+        @endif
+
+<div class="max-w-7xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md">
+    <div class="mb-4">
+         <h1 class="text-xl sm:text-xl font-semibold text-center mb-2 sm:mb-4">Siswa PKL</h1>
+         <div class="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 sm:space-x-4">
+            <div class="relative w-full sm:w-auto text-xs">
             <input class="border rounded p-2 pl-10 w-full sm:w-64" id="search" placeholder="Cari Nama Siswa" type="text" oninput="searchTable()">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-        </div>
+            </div>
         <!-- Tombol aksi multiple -->
-        <div class="flex space-x-2">
-            <button onclick="updateMultipleStatus('diterima')" class="bg-green-200 text-green-800 text-sm px-2 py-1 rounded-shadow">
-                <i class="fas fa-check mr-1"></i> Terima
-            </button>
-            <button onclick="updateMultipleStatus('ditolak')" class="bg-red-300 text-green-800 text-sm px-2 py-1 rounded-shadow">
-                <i class="fas fa-times mr-1"></i> Tolak
-            </button>
+            <div class="flex space-x-2">
+                <button onclick="updateMultipleStatus('diterima')" class="bg-green-200 text-green-800 text-sm px-2 py-1 rounded-shadow">
+                    <i class="fas fa-check mr-1"></i> Terima
+                </button>
+                <button onclick="updateMultipleStatus('ditolak')" class="bg-red-300 text-green-800 text-sm px-2 py-1 rounded-shadow">
+                    <i class="fas fa-times mr-1"></i> Tolak
+                </button>
+            </div> 
         </div>
-         
     </div>
-</div>
 
 <!-- Tabel -->
 <div class="overflow-x-auto">

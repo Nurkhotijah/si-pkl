@@ -72,9 +72,9 @@
         <img src="{{ public_path('assets/certificate/qelopak.png') }}" alt="Logo" class="logo">
         <h1>Penilaian PKL</h1>
         <div class="info">
-            <p><strong>Nama Siswa:</strong> {{ $penilaian->user->name }}</p>
+            <p><strong>Nama:</strong> {{ $penilaian->user->name }}</p>
             <p><strong>Sekolah:</strong> {{ $penilaian->user->profile->sekolah->nama }}</p>
-            <p><strong>Periode PKL:</strong> {{ \Carbon\Carbon::parse($tanggalMulai)->format('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalSelesai)->format('d F Y') }}</p>
+            <p><strong>Periode PKL:</strong> {{ \Carbon\Carbon::parse($tanggalMulai)->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalSelesai)->translatedFormat('d F Y') }}</p>
         </div>        
         <table>
             <thead>

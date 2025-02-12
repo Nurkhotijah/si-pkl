@@ -51,4 +51,6 @@ class Profile extends Model
     {
         return $this->belongsTo(Sekolah::class, 'id_sekolah', 'id');
     }
+
+    
 }

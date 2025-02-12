@@ -15,17 +15,20 @@ class AuthController extends Controller
 {
     // Validasi input
     $validated = $request->validate([
-        'name' => 'required|string|max:255', // Nama Sekolah atau Username wajib diisi
-        'email' => 'required|string|email|max:255|unique:users', // Email harus unik
-        'alamat' => 'required|string|max:255', // Alamat wajib diisi
-        'password' => 'required|string|min:5', // Password minimal 5 karakter
-        'agreement' => 'accepted', // Validasi checkbox persetujuan
+        'name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\s]+$/'],
+        'email' => 'required|string|email|max:255|unique:users|regex:/^.+@.+\..+$/',
+        'alamat' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\s]+$/'],
+        'password' => 'required|string|min:5',
+        'agreement' => 'accepted',
     ], [
         'name.required' => 'Nama Sekolah wajib diisi.',
+        'name.regex' => 'Nama Sekolah hanya boleh mengandung huruf dan angka, tanpa simbol atau emoji.',
         'email.required' => 'Email wajib diisi.',
         'email.email' => 'Format email tidak valid.',
         'email.unique' => 'Email sudah terdaftar, silakan gunakan email lain.',
+        'email.regex' => 'Email harus mengandung tanda @ dan format yang benar.',
         'alamat.required' => 'Alamat wajib diisi.',
+        'alamat.regex' => 'Alamat hanya boleh mengandung huruf dan angka, tanpa simbol atau emoji.',
         'password.required' => 'Kata sandi wajib diisi.',
         'password.min' => 'Kata sandi harus minimal 5 karakter.',
         'agreement.accepted' => 'Anda harus menyetujui kebijakan dan ketentuan penggunaan.',
